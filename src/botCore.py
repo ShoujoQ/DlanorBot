@@ -27,6 +27,8 @@ def readConfig():
     #ajoinChannels = botConfig.get('Bot', 'ajoin_channels')
     #ownerPassword = botConfig.get('Bot, 'owner_password')
     #quitMessage = botConfig.get('Bot', 'quit_message')
+    #versionText = botConfig.get('Bot', 'version_text')
+    #channelPart = botConfig.get('Bot', 'channel_part')
 
 def connect(botConfig):
     #Create the socket and connect to it, sending ident info to the network
