@@ -61,6 +61,9 @@ def formatLine(line):
     
     return line
 
+def sendAction(sock, destination, string):
+    sock.send("PRIVMSG " + destination + " :ACTION " + string + "\r\n")
+
 def sendLine(sock, destination, string):
     sock.send("PRIVMSG " + destination + " :" + string + "\r\n")
 
