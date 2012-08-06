@@ -37,6 +37,13 @@ def privateCommands(sock, line, botConfig):
                     for x in range(6, len(line)):
                         lineToSend += line[x]
                     botCore.sendLine(sock, line[5], lineToSend)
+                
+                elif (line[3] == ":&act"):
+                    lineToSend = ""
+                    for x in range(6, len(line)):
+                        lineToSend += line[x]
+                    botCore.sendAction(sock, line[5], lineToSend)
+                
             else:
                 botCore.sendLine(sock, getUsername(line), "That password is INCORRECT.")
         else:
