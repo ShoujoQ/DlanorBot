@@ -7,7 +7,7 @@ from __future__ import print_function
 import ConfigParser, socket, string, datetime
 
 botConfig = ConfigParser.RawConfigParser()
-botConfig.read('C:\Users\Rebecca Miyamoto\EclipseWorkspace\DlanorBot\src\config.con')
+botConfig.read('config.con')
 
 def readConfig():
     return botConfig
