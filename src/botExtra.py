@@ -1,5 +1,6 @@
-'''Created on 06/08/2012'''
+'''Created on 05/08/2012'''
 '''Last Modified on 06/08/2012'''
+'''Version 0.1.2'''
 '''@author: Rebecca Miyamoto'''
 
 import botCore, botStandard, botFileIO, math, random
@@ -39,7 +40,7 @@ def witch(sock, line):
     else:
         if not (botFileIO.readTime("witch", username) == "null"):
             if (botFileIO.isThreeHour(botFileIO.readTime("witch", username), botFileIO.getCurrentDateTime()) == 0):
-                botCore.sendLine(sock, username, "Be patient, collector of WITCHES. Three hours have not yet ELAPSED. There are yet " + str(botFileIO.timeLeft(botFileIO.readTime("witch", username), botFileIO.getCurrentDateTime())) + " seconds REMAINING.")
+                botCore.sendLine(sock, username, "Be patient, collector of WITCHES. It is not yet your TIME. There are yet " + str(botFileIO.timeLeft(botFileIO.readTime("witch", username), botFileIO.getCurrentDateTime())) + " seconds REMAINING.")
             
             else:
                 witchEditing(sock, line, username, 0)

@@ -1,7 +1,8 @@
 from __future__ import print_function
 
-'''Created on 06/08/2012'''
+'''Created on 05/08/2012'''
 '''Last Modified on 06/08/2012'''
+'''Version 0.1.2'''
 '''@author: Rebecca Miyamoto'''
 
 from datetime import datetime, timedelta

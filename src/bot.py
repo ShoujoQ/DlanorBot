@@ -1,5 +1,6 @@
-'''Created on 06/08/2012'''
+'''Created on 05/08/2012'''
 '''Last Modified on 06/08/2012'''
+'''Version 0.1.2'''
 '''@author: Rebecca Miyamoto'''
 
 import botCore, botStandard, string, time

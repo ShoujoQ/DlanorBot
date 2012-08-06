@@ -1,10 +1,12 @@
 from __future__ import print_function
 
 '''Created on 05/08/2012'''
-'''Last Modified on 05/08/2012'''
+'''Last Modified on 06/08/2012'''
+'''Version 0.1.2'''
 '''@author: Rebecca Miyamoto'''
 
-import ConfigParser, socket, string, datetime
+import ConfigParser, socket, string
+from datetime import datetime
 
 botConfig = ConfigParser.RawConfigParser()
 botConfig.read('config.con')
@@ -49,7 +51,7 @@ def readBuffer(sock):
     
     #Echo it to the terminal if it's not an empty line
     if not (readBuffer == ""):
-        print(("[" + str(datetime.time()) + "] " + readBuffer), end='')
+        print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + readBuffer), end='')
     
     #Split the line
     lineOut = string.split(readBuffer, "\r\n")
