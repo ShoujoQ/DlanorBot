@@ -35,13 +35,19 @@ def privateCommands(sock, line, botConfig):
                 elif (line[3] == ":&say"):
                     lineToSend = ""
                     for x in range(6, len(line)):
-                        lineToSend = lineToSend + " " + line[x]
+                        if (x == 6):
+                            lineToSend += line[x]
+                        else:
+                            lineToSend = lineToSend + " " + line[x]
                     botCore.sendLine(sock, line[5], lineToSend)
                 
                 elif (line[3] == ":&act"):
                     lineToSend = ""
                     for x in range(6, len(line)):
-                        lineToSend = lineToSend + " " + line[x]
+                        if (x == 6):
+                            lineToSend += line[x]
+                        else:
+                            lineToSend = lineToSend + " " + line[x]
                     botCore.sendAction(sock, line[5], lineToSend)
                 
             else:
