@@ -1,6 +1,6 @@
 '''Created on 05/08/2012'''
 '''Last Modified on 06/08/2012'''
-'''Version 0.1.2'''
+'''Version 0.1.3'''
 '''@author: Rebecca Miyamoto'''
 
 import botCore, botStandard, string, time
@@ -20,6 +20,10 @@ while True:
         
         #Do some formatting
         line = botCore.formatLine(line)
+        
+        #Output the line to the console if not empty
+        if not (line == []):
+            botCore.consoleOutputLine(sock, line)
         
         if (len(line) >= 1):
             #Handler for NickServ identification and ajoining channels

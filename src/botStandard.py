@@ -1,20 +1,24 @@
 '''Created on 05/08/2012'''
 '''Last Modified on 06/08/2012'''
-'''Version 0.1.2'''
+'''Version 0.1.3'''
 '''@author: Rebecca Miyamoto'''
 
 import botCore, botExtra, string, sys
 
 def publicCommands(sock, line):
     caught = False
+    botConfig = botCore.readConfig()
     
     if (line[3] == ":&knox"):
-        botExtra.knox(sock, line)
         caught = True
+        botExtra.knox(sock, line)
     
     elif (line[3] == ":&witch"):
-        botExtra.witch(sock, line)
         caught = True
+        if (line[2] == botConfig.get('Bot', 'bot_nickname')):
+            botCore.sendLine(sock, getUsername(line), "This command is only functional if sent in a CHANNEL.")
+        else:
+            botExtra.witch(sock, line)
         
     return caught
 

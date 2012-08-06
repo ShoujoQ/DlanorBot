@@ -2,7 +2,7 @@ from __future__ import print_function
 
 '''Created on 05/08/2012'''
 '''Last Modified on 06/08/2012'''
-'''Version 0.1.2'''
+'''Version 0.1.3'''
 '''@author: Rebecca Miyamoto'''
 
 import ConfigParser, socket, string
@@ -51,13 +51,62 @@ def readBuffer(sock):
         except socket.error:
             break
     
-    #Echo it to the terminal if it's not an empty line
-    if not (readBuffer == ""):
-        print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + readBuffer), end='')
-    
-    #Split the line
     lineOut = string.split(readBuffer, "\r\n")
+    
     return lineOut
+
+def consoleOutputLine(sock, outputLine):
+    #Conditional line display filtering
+    if (len(outputLine) >= 2):
+        
+        #Talking in channels and query
+        if (outputLine[1] == "PRIVMSG"):
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + outputLine[2] + "} <" + getUsername(outputLine) + "> " + condenseLine(outputLine, 3)), end='\n')
+        
+        #Mode changes
+        elif ((outputLine[1] == "MODE") and (len(outputLine) >= 5)):
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + outputLine[2] + "} " + getUsername(outputLine) + " " + "has set mode " + outputLine[3] + " on user " + outputLine[4]), end='\n')
+        
+        #Channel topic displays
+        elif (outputLine[1] == "332"):
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] Channel topic for " + outputLine[3] + " is " + condenseLine(outputLine, 4)), end='\n')
+        
+        #Channel join messages
+        elif ((outputLine[1] == "JOIN")):
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + getUsername(outputLine) + " has joined " + outputLine[2]), end='\n')
+        
+        #Channel part messages
+        elif ((outputLine[1] == "PART")):
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + getUsername(outputLine) + " has left " + outputLine[2]), end='\n')
+        
+        #Notices
+        elif((outputLine[1] == "NOTICE")):
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] NOTICE from " + getUsername(outputLine) + ": " + condenseLine(outputLine, 3)), end='\n')
+        
+        #Suppress nickname stuff and NAMES lists
+        elif (outputLine[1] == "333", "353", "366"):
+            1 + 1#Do nothing
+        
+        #Suppress MOTD
+        elif (outputLine[1] == "372", "375", "376"):
+            1 + 1#Do nothing
+        
+        #Suppress Welcome message
+        elif (outputLine[1] == "001", "002", "003", "004", "005", "042", "251", "252", "253", "254", "255", "265", "266"):
+            1 + 1#Do nothing
+        
+        #Suppress server usermode set
+        elif ((outputLine[1] == "MODE") and (len(outputLine) >= 4)):
+            if (outputLine[3] == ":+ix"):
+                1 + 1#Do nothing
+        
+        #All others
+        else:
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + condenseLine(outputLine, 0)), end='\n')
+        
+    #Catch for all others that don't get past the length check earlier
+    else:
+        print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + condenseLine(outputLine, 0)), end='\n')
 
 def formatLine(line):
     line=string.rstrip(line)
@@ -81,3 +130,22 @@ def joinChannels(sock, channels):
 def leaveChannels(sock, channels):
     for x in range(0, len(channels)):
         sock.send("PART #" + channels[x] + " " + botConfig.get('Bot', 'channel_part') + "\r\n")
+
+def getUsername(line):
+    username = "null"
+    lineTemp = string.split(line[0], ":")
+    
+    if (len(lineTemp) >= 2):
+        lineTemp = string.split(lineTemp[1], "!")
+        username = lineTemp[0]
+
+    return username
+
+def condenseLine(line, start):
+    condLine = ""
+    for x in range(start, len(line)):
+        if (x == start):
+            condLine += line[x]
+        else:
+            condLine = condLine + " " + line[x]
+    return condLine
