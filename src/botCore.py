@@ -65,19 +65,19 @@ def consoleOutputLine(sock, outputLine):
         
         #Mode changes
         elif ((outputLine[1] == "MODE") and (len(outputLine) >= 5)):
-            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + outputLine[2] + "} " + getUsername(outputLine) + " " + "has set mode " + outputLine[3] + " on user " + outputLine[4]), end='\n')
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + outputLine[2] + "} " + getUsername(outputLine) + " " + "has set mode " + outputLine[3] + " on user " + condenseLine(outputLine, 4)), end='\n')
         
         #Channel topic displays
         elif (outputLine[1] == "332"):
-            print(("[" + datetime.now().strftime('%H:%M:%S') + "] Channel topic for " + outputLine[3] + " is " + stripColon(condenseLine(outputLine, 4))), end='\n')
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + outputLine[3] + "} Channel topic is " + stripColon(condenseLine(outputLine, 4))), end='\n')
         
         #Channel join messages
         elif ((outputLine[1] == "JOIN")):
-            print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + getUsername(outputLine) + " has joined " + stripColon(outputLine[2])), end='\n')
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + stripColon(outputLine[2]) + "} " + getUsername(outputLine) + " has joined the channel."), end='\n')
         
         #Channel part messages
         elif ((outputLine[1] == "PART")):
-            print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + getUsername(outputLine) + " has left " + outputLine[2]), end='\n')
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + outputLine[2] + "} " + getUsername(outputLine) + " has left the channel."), end='\n')
         
         #Notices
         elif((outputLine[1] == "NOTICE")):
@@ -111,7 +111,7 @@ def consoleOutputLine(sock, outputLine):
 #Strip the leading colon from various strings
 def stripColon(line):
     #Logic to strip the colon
-    line = line.split(':')
+    line = line.split(':', 1)
     return line[1]
 
 def formatLine(line):
