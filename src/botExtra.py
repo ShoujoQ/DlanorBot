@@ -34,18 +34,14 @@ def randomKnox():
 
 def witch(sock, line):
     username = botStandard.getUsername(line)
-    if (username == "Shoujo_Q"):
-        botCore.sendLine(sock, line[2], "Shoujo_Q is the Territory Lord and therefore gets all the WITCHES!")
-    
-    else:
-        if not (botFileIO.readTime("witch", username) == "null"):
-            if (botFileIO.isThreeHour(botFileIO.readTime("witch", username), botFileIO.getCurrentDateTime()) == 0):
-                botCore.sendLine(sock, username, "Be patient, collector of WITCHES. It is not yet your TIME. There are yet " + str(botFileIO.timeLeft(botFileIO.readTime("witch", username), botFileIO.getCurrentDateTime())) + " seconds REMAINING.")
-            
-            else:
-                witchEditing(sock, line, username, 0)
+    if not (botFileIO.readTime("witch", username) == "null"):
+        if (botFileIO.isThreeHour(botFileIO.readTime("witch", username), botFileIO.getCurrentDateTime()) == 0):
+            botCore.sendLine(sock, username, "Be patient, collector of WITCHES. It is not yet your TIME. There are yet " + str(botFileIO.timeLeft(botFileIO.readTime("witch", username), botFileIO.getCurrentDateTime())) + " seconds REMAINING.")
+        
         else:
-            witchEditing(sock, line, username, 1)
+            witchEditing(sock, line, username, 0)
+    else:
+        witchEditing(sock, line, username, 1)
 
 def witchEditing(sock, line, username, firstFlag):
     numWitches = random.randint(-3, 9)
@@ -76,7 +72,7 @@ def witchEditing(sock, line, username, firstFlag):
                     botCore.sendLine(sock, line[2], username + " is absolutely terrible and managed to drive away " + str(int(math.fabs(numWitches))) + " witches from their SENATE. " + username + " has " + str((numWitches) + (int((botFileIO.readLine("witch", username))[1]))) + " witches in their SENATE.")
                 botFileIO.editLine("witch", username, numWitches)
             
-            if(numWitches == -1):
+            elif(numWitches == -1):
                 if (((numWitches) + (int((botFileIO.readLine("witch", username))[1]))) < 0):
                     botCore.sendLine(sock, line[2], username + " is absolutely terrible and managed to drive away " + str(int(math.fabs(numWitches))) + " witch from their Senate, leaving them with no witches REMAINING.")
                 else:
