@@ -61,7 +61,7 @@ def consoleOutputLine(sock, outputLine):
         
         #Talking in channels and query
         if (outputLine[1] == "PRIVMSG"):
-            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + outputLine[2] + "} <" + getUsername(outputLine) + "> " + condenseLine(outputLine, 3)), end='\n')
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] {" + outputLine[2] + "} <" + getUsername(outputLine) + "> " + stripColon(condenseLine(outputLine, 3))), end='\n')
         
         #Mode changes
         elif ((outputLine[1] == "MODE") and (len(outputLine) >= 5)):
@@ -69,11 +69,11 @@ def consoleOutputLine(sock, outputLine):
         
         #Channel topic displays
         elif (outputLine[1] == "332"):
-            print(("[" + datetime.now().strftime('%H:%M:%S') + "] Channel topic for " + outputLine[3] + " is " + condenseLine(outputLine, 4)), end='\n')
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] Channel topic for " + outputLine[3] + " is " + stripColon(condenseLine(outputLine, 4))), end='\n')
         
         #Channel join messages
         elif ((outputLine[1] == "JOIN")):
-            print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + getUsername(outputLine) + " has joined " + outputLine[2]), end='\n')
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + getUsername(outputLine) + " has joined " + stripColon(outputLine[2])), end='\n')
         
         #Channel part messages
         elif ((outputLine[1] == "PART")):
@@ -81,7 +81,7 @@ def consoleOutputLine(sock, outputLine):
         
         #Notices
         elif((outputLine[1] == "NOTICE")):
-            print(("[" + datetime.now().strftime('%H:%M:%S') + "] NOTICE from " + getUsername(outputLine) + ": " + condenseLine(outputLine, 3)), end='\n')
+            print(("[" + datetime.now().strftime('%H:%M:%S') + "] NOTICE from " + getUsername(outputLine) + ": " + stripColon(condenseLine(outputLine, 3))), end='\n')
         
         #Suppress nickname stuff and NAMES lists
         elif (outputLine[1] == "333", "353", "366"):
@@ -107,6 +107,12 @@ def consoleOutputLine(sock, outputLine):
     #Catch for all others that don't get past the length check earlier
     else:
         print(("[" + datetime.now().strftime('%H:%M:%S') + "] " + condenseLine(outputLine, 0)), end='\n')
+
+#Strip the leading colon from various strings
+def stripColon(line):
+    #Logic to strip the colon
+    line = line.split(':')
+    return line[1]
 
 def formatLine(line):
     line=string.rstrip(line)
